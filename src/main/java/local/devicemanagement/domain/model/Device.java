@@ -5,11 +5,12 @@ import lombok.Value;
 
 import java.time.Instant;
 
+
 @Value
 @Builder(toBuilder = true)
 public class Device {
 
-    Long id;
+    Integer id;
     String name;
     String brand;
     State state;
