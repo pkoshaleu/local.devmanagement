@@ -2,6 +2,7 @@ package local.devicemanagement.infrastructure;
 
 import org.springframework.stereotype.Component;
 
+import local.devicemanagement.application.exception.ConcurrentUpdateException;
 import local.devicemanagement.domain.model.Device;
 import local.devicemanagement.domain.repository.DeviceRepository;
 
@@ -31,6 +32,13 @@ public class ImDeviceRepository implements DeviceRepository {
 
     @Override
     public Device save(Device device) {
+        if (device.getId() != null) {
+            Device current = devices.get(device.getId());
+            if (current == null || !current.getVersion().equals(device.getVersion())) {
+                throw new ConcurrentUpdateException(device.getId());
+            }
+        }
+
         if (device.getId() == null) {
             return put(() -> device.toBuilder().id(nextId()).version(0).build());
         } else {

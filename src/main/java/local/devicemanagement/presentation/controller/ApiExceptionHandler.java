@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import local.devicemanagement.application.exception.ConcurrentUpdateException;
 import local.devicemanagement.application.exception.ModificationException;
 import local.devicemanagement.application.exception.NotFoundException;
 import local.devicemanagement.application.exception.StateException;
@@ -24,7 +25,7 @@ public class ApiExceptionHandler {
         return makeItProblem(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    @ExceptionHandler({ModificationException.class, StateException.class})
+    @ExceptionHandler({ModificationException.class, StateException.class, ConcurrentUpdateException.class})
     public ProblemDetail handleConflict(RuntimeException ex) {
         return makeItProblem(HttpStatus.CONFLICT, ex.getMessage());
     }
