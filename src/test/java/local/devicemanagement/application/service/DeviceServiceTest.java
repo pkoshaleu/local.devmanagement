@@ -1,6 +1,7 @@
 package local.devicemanagement.application.service;
 
 import local.devicemanagement.application.exception.NotFoundException;
+import local.devicemanagement.application.exception.StateException;
 import local.devicemanagement.domain.model.Device;
 import local.devicemanagement.domain.model.State;
 import local.devicemanagement.domain.repository.DeviceRepository;
@@ -8,6 +9,8 @@ import local.devicemanagement.domain.repository.DeviceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -19,14 +22,17 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.never;
 
 
 @ExtendWith(MockitoExtension.class)
 class DeviceServiceTest {
 
     private static final Instant NOW_1 = Instant.parse("2026-09-20T08:00:00Z");
+    private static final Instant BEF_1 = Instant.parse("2026-09-19T08:00:00Z");
     private static final String NAME_1 = "Name 1";
     private static final String BRAND_1 = "Brand 1";
     private static final Long ID_1 = 1L;
@@ -88,6 +94,59 @@ class DeviceServiceTest {
             when(repository.findById(ID_1)).thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> service.getById(ID_1))
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessageContaining(ID_1.toString());
+        }
+    }
+
+    @Nested
+    class UpdateState {
+
+        @ParameterizedTest
+        @CsvSource({
+                "AVAILABLE, IN_USE",
+                "AVAILABLE, INACTIVE",
+                "IN_USE, AVAILABLE",
+                "INACTIVE, AVAILABLE"
+        })
+        void allowed(State current, State next) {
+            Device device = Device.builder().id(ID_1).state(current).updatedAt(BEF_1).build();
+            when(repository.findById(ID_1)).thenReturn(Optional.of(device));
+            when(timeService.now()).thenReturn(NOW_1);
+            when(repository.save(any(Device.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+            Device result = service.updateState(ID_1, next);
+
+            ArgumentCaptor<Device> captor = ArgumentCaptor.forClass(Device.class);
+            verify(repository).save(captor.capture());
+            Device saved = captor.getValue();
+            assertAll(
+                    () -> assertThat(result).isSameAs(saved),
+                    () -> assertThat(saved.getState()).isEqualTo(next),
+                    () -> assertThat(saved.getUpdatedAt()).isEqualTo(NOW_1)
+            );
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "IN_USE, INACTIVE",
+                "INACTIVE, IN_USE"
+        })
+        void disallowed(State current, State next) {
+            Device device = Device.builder().id(ID_1).state(current).updatedAt(BEF_1).build();
+            when(repository.findById(ID_1)).thenReturn(Optional.of(device));
+
+            assertThatThrownBy(() -> service.updateState(ID_1, next))
+                    .isInstanceOf(StateException.class);
+
+            verify(repository, never()).save(any(Device.class));
+        }
+
+        @Test
+        void notFound() {
+            when(repository.findById(ID_1)).thenReturn(Optional.empty());
+
+            assertThatThrownBy(() -> service.updateState(ID_1, State.AVAILABLE))
                     .isInstanceOf(NotFoundException.class)
                     .hasMessageContaining(ID_1.toString());
         }
