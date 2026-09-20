@@ -8,6 +8,7 @@ import local.devicemanagement.application.exception.ModificationException;
 import local.devicemanagement.application.exception.NotFoundException;
 import local.devicemanagement.application.exception.StateException;
 import local.devicemanagement.domain.model.Device;
+import local.devicemanagement.domain.model.DeviceFilter;
 import local.devicemanagement.domain.model.State;
 import local.devicemanagement.domain.repository.DeviceRepository;
 
@@ -42,8 +43,7 @@ public class DeviceService {
     }
 
     @Transactional(readOnly = true)
-    public List<Device> getAll() {
-        //TODO: filtration!
+    public List<Device> getAll(DeviceFilter filter) {
         return repository.findAll();
     }
 

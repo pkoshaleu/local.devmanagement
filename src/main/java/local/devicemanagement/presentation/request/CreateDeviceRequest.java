@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 
 
 public record CreateDeviceRequest(
-        @NotBlank @Size(min = 1, max = 256) String name,
-        @NotBlank @Size(min = 1, max = 256) String brand
+        @NotBlank @Size(min = 1, max = 255) String name,
+        @NotBlank @Size(min = 1, max = 255) String brand
 ) {
 }

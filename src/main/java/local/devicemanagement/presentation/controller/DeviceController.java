@@ -18,6 +18,7 @@ import local.devicemanagement.application.service.DeviceService;
 import local.devicemanagement.presentation.mapper.DeviceMapper;
 import local.devicemanagement.presentation.request.ChangeStateRequest;
 import local.devicemanagement.presentation.request.CreateDeviceRequest;
+import local.devicemanagement.presentation.request.DeviceFilterRequest;
 import local.devicemanagement.presentation.request.PatchDeviceRequest;
 import local.devicemanagement.presentation.response.DeviceResponse;
 
@@ -39,8 +40,9 @@ public class DeviceController {
     }
 
     @GetMapping
-    public List<DeviceResponse> getAll() {
-        return service.getAll().stream()
+    public List<DeviceResponse> getAll(@Valid DeviceFilterRequest request) {
+        var filter = mapper.toFilter(request);
+        return service.getAll(filter).stream()
                 .map(mapper::toResponse)
                 .toList();
     }

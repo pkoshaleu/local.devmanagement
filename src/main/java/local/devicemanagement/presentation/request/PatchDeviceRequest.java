@@ -6,7 +6,7 @@ import local.devicemanagement.presentation.validation.NullOrNotBlank;
 
 
 public record PatchDeviceRequest(
-        @NullOrNotBlank @Size(max = 256) String name,
-        @NullOrNotBlank @Size(max = 256) String brand
+        @NullOrNotBlank @Size(min = 1, max = 255) String name,
+        @NullOrNotBlank @Size(min = 1, max = 255) String brand
 ) {
 }
