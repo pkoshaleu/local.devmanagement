@@ -1,0 +1,17 @@
+services:
+  device-db:
+    image: postgres:17
+    container_name: device-db
+    environment:
+      POSTGRES_USER: device
+      POSTGRES_PASSWORD: device
+      POSTGRES_DB: device
+    ports:
+      - "9876:5432"
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U device -d device"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
