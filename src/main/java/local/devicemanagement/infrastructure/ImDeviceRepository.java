@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.function.Supplier;
 
 
-@Component
+//@Component
 public class ImDeviceRepository implements DeviceRepository {
 
     private static Integer lastId = 1;

@@ -35,8 +35,10 @@ public class DeviceEntity {
     @Column("device_state")
     private State state;
 
+    @Column("create_at")
     private Instant createdAt;
 
+    @Column("updated_at")
     private Instant updatedAt;
 
     @Version

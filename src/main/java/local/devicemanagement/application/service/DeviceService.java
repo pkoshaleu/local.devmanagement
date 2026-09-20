@@ -2,6 +2,7 @@ package local.devicemanagement.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import local.devicemanagement.application.exception.ModificationException;
 import local.devicemanagement.application.exception.NotFoundException;
@@ -21,6 +22,7 @@ public class DeviceService {
     private final DeviceRepository repository;
     private final TimeService timeService;
 
+    @Transactional
     public Device create(String name, String brand) {
         Instant now = timeService.now();
         Device device = Device.builder()
@@ -33,16 +35,19 @@ public class DeviceService {
         return repository.save(device);
     }
 
+    @Transactional(readOnly = true)
     public Device getById(Integer id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
 
+    @Transactional(readOnly = true)
     public List<Device> getAll() {
         //TODO: filtration!
         return repository.findAll();
     }
 
+    @Transactional
     public Device updateDevice(Integer id, String name, String brand) {
         Device device = guardState(getById(id));
 
@@ -58,6 +63,7 @@ public class DeviceService {
         return repository.save(updated);
     }
 
+    @Transactional
     public Device updateState(Integer id, State next) {
         Device device = getById(id);
 
@@ -70,6 +76,7 @@ public class DeviceService {
         return repository.save(updated);
     }
 
+    @Transactional
     public void delete(Integer id) {
         Device device = guardState(getById(id));
         repository.delete(device);

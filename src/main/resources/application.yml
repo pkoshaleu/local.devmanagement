@@ -1,5 +1,12 @@
 spring:
   application:
     name: device-management
+  datasource:
+    url: jdbc:postgresql://localhost:9876/device
+    username: ${DB_USERNAME:device}
+    password: ${DB_PASSWORD:device}
+  sql:
+    init:
+      mode: never
   jackson:
     property-naming-strategy: SNAKE_CASE
