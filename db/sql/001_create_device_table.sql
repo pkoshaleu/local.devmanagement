@@ -12,5 +12,6 @@ CREATE TABLE IF NOT EXISTS device (
     CONSTRAINT device_state_enum CHECK (device_state IN ('AVAILABLE', 'IN_USE', 'INACTIVE'))
 );
 
-CREATE INDEX IF NOT EXISTS idx_devices_brand ON device (device_brand);
+CREATE INDER IF NOT EXISTS idx_devices_name ON device (UPPER(device_name));
+CREATE INDEX IF NOT EXISTS idx_devices_brand ON device (UPPER(device_brand));
 CREATE INDEX IF NOT EXISTS idx_devices_state ON device (device_state);

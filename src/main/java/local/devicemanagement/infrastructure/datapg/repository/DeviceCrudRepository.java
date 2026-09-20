@@ -1,4 +1,4 @@
-package local.devicemanagement.infrastructure.repository;
+package local.devicemanagement.infrastructure.datapg.repository;
 
 import org.springframework.data.repository.CrudRepository;
 

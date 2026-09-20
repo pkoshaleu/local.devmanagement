@@ -44,7 +44,7 @@ public class DeviceService {
 
     @Transactional(readOnly = true)
     public List<Device> getAll(DeviceFilter filter) {
-        return repository.findAll();
+        return repository.findAll(filter);
     }
 
     @Transactional

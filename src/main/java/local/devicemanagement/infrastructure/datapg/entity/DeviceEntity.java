@@ -35,7 +35,7 @@ public class DeviceEntity {
     @Column("device_state")
     private State state;
 
-    @Column("create_at")
+    @Column("created_at")
     private Instant createdAt;
 
     @Column("updated_at")

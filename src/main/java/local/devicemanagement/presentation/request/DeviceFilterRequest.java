@@ -5,7 +5,7 @@ import jakarta.validation.constraints.Size;
 import local.devicemanagement.domain.model.State;
 import local.devicemanagement.presentation.validation.NullOrNotBlank;
 
-
+//TODO: validation message for state
 public record DeviceFilterRequest(
         @NullOrNotBlank @Size(max = 255) String brand,
         @NullOrNotBlank @Size(max = 255) String name,
