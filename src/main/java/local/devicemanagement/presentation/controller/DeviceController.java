@@ -53,13 +53,13 @@ public class DeviceController {
 
     @PatchMapping("/{id}")
     public DeviceResponse update(@PathVariable Integer id, @Valid @RequestBody PatchDeviceRequest request) {
-        var device = service.update(id, request.name(), request.brand());
+        var device = service.updateDevice(id, request.name(), request.brand());
         return mapper.toResponse(device);
     }
 
     @PutMapping("/{id}/state")
     public DeviceResponse updateState(@PathVariable Integer id, @Valid @RequestBody ChangeStateRequest request) {
-        var device = service.update(id, request.state());
+        var device = service.updateState(id, request.state());
         return mapper.toResponse(device);
     }
 

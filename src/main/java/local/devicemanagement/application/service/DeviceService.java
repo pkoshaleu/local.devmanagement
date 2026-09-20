@@ -43,7 +43,7 @@ public class DeviceService {
         return repository.findAll();
     }
 
-    public Device update(Integer id, String name, String brand) {
+    public Device updateDevice(Integer id, String name, String brand) {
         Device device = guardState(getById(id));
 
         Device.DeviceBuilder builder = device.toBuilder();
@@ -58,7 +58,7 @@ public class DeviceService {
         return repository.save(updated);
     }
 
-    public Device update(Integer id, State next) {
+    public Device updateState(Integer id, State next) {
         Device device = getById(id);
 
         State current = device.getState();
