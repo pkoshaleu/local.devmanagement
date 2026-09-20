@@ -16,5 +16,6 @@ public class Device {
     State state;
     Instant createdAt;
     Instant updatedAt;
+    Integer version;
 
 }

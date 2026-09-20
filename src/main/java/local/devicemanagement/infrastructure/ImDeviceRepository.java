@@ -10,12 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 
 @Component
 public class ImDeviceRepository implements DeviceRepository {
 
-    private Integer nextId = 1;
+    private static Integer lastId = 1;
     private final Map<Integer, Device> devices = new HashMap<>();
 
     @Override
@@ -30,16 +31,32 @@ public class ImDeviceRepository implements DeviceRepository {
 
     @Override
     public Device save(Device device) {
-        Device toStore = device.getId() == null
-                ? device.toBuilder().id(nextId++).build()
-                : device;
-        devices.put(toStore.getId(), toStore);
-        return toStore;
+        if (device.getId() == null) {
+            return put(() -> device.toBuilder().id(nextId()).version(0).build());
+        } else {
+            return put(() -> device.toBuilder().version(nextVersion(device.getVersion())).build());
+        }
+    }
+
+    private Device put(Supplier<Device> builder) {
+        Device device = builder.get();
+        devices.put(device.getId(), device);
+        return device;
     }
 
     @Override
     public void delete(Device device) {
         devices.remove(device.getId());
+    }
+
+    //~
+
+    private static int nextId() {
+        return lastId++;
+    }
+
+    private static int nextVersion(Integer current) {
+        return current == null ? 0 : current + 1;
     }
 
 }
