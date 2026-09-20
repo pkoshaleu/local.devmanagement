@@ -10,7 +10,8 @@ public record DeviceResponse (
     String name,
     String brand,
     State state,
-    Instant createdAt
+    Instant createdAt,
+    Instant updatedAt
 ) {
     //~
 }
