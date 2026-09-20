@@ -126,6 +126,7 @@ Errors follow RFC 7807. A typical error response:
   it with two separated statuses;
 - Ledger with availability and landing statuses update history;
 - Reasonable observations metrics beyond exposed by default.
+- Humanize Open API generated documentation.
 
 ## Known issues
 - Due to local environment constraints tests expected to see Docker 20.10 and Docker API 1.41

@@ -10,3 +10,15 @@ spring:
       mode: never
   jackson:
     property-naming-strategy: SNAKE_CASE
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
