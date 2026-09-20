@@ -6,7 +6,7 @@ import java.time.Instant;
 
 
 public record DeviceResponse (
-    Integer id,
+    Long id,
     String name,
     String brand,
     State state,

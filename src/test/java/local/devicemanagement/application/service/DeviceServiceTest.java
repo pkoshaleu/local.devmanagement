@@ -29,7 +29,7 @@ class DeviceServiceTest {
     private static final Instant NOW_1 = Instant.parse("2026-09-20T08:00:00Z");
     private static final String NAME_1 = "Name 1";
     private static final String BRAND_1 = "Brand 1";
-    private static final Integer ID_1 = 1;
+    private static final Long ID_1 = 1L;
 
 
     @Mock
@@ -48,7 +48,7 @@ class DeviceServiceTest {
         void happyPath() {
             when(timeService.now()).thenReturn(NOW_1);
 
-            Device persisted = Device.builder().id(1).build();
+            Device persisted = Device.builder().id(1L).build();
             when(repository.save(
                     org.mockito.ArgumentMatchers.any(Device.class))
             ).thenReturn(persisted);

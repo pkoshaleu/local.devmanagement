@@ -37,7 +37,7 @@ public class DeviceService {
     }
 
     @Transactional(readOnly = true)
-    public Device getById(Integer id) {
+    public Device getById(Long id) {
         return repository.findById(id)
                 .orElseThrow(() -> new NotFoundException(id));
     }
@@ -48,7 +48,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public Device updateDevice(Integer id, String name, String brand) {
+    public Device updateDevice(Long id, String name, String brand) {
         Device device = guardState(getById(id));
 
         Device.DeviceBuilder builder = device.toBuilder();
@@ -64,7 +64,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public Device updateState(Integer id, State next) {
+    public Device updateState(Long id, State next) {
         Device device = getById(id);
 
         State current = device.getState();
@@ -77,7 +77,7 @@ public class DeviceService {
     }
 
     @Transactional
-    public void delete(Integer id) {
+    public void delete(Long id) {
         Device device = guardState(getById(id));
         repository.delete(device);
     }

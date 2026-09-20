@@ -24,7 +24,7 @@ import java.time.Instant;
 public class DeviceEntity {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Column("device_name")
     private String name;
@@ -42,6 +42,6 @@ public class DeviceEntity {
     private Instant updatedAt;
 
     @Version
-    private Integer version;
+    private Long version;
 
 }

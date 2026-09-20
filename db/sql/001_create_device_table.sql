@@ -5,13 +5,13 @@ CREATE TABLE IF NOT EXISTS device (
     device_state TEXT  NOT NULL,
     created_at TIMESTAMPTZ  NOT NULL DEFAULT now(),
     updated_at TIMESTAMPTZ  NOT NULL DEFAULT now(),
-    version BIGINT NOT NULL DEFAULT 0
+    version BIGINT NOT NULL DEFAULT 0,
 
     CONSTRAINT device_name_len CHECK (char_length(device_name) <= 255),
     CONSTRAINT device_brand_len CHECK (char_length(device_brand) <= 255),
     CONSTRAINT device_state_enum CHECK (device_state IN ('AVAILABLE', 'IN_USE', 'INACTIVE'))
 );
 
-CREATE INDER IF NOT EXISTS idx_devices_name ON device (UPPER(device_name));
-CREATE INDEX IF NOT EXISTS idx_devices_brand ON device (UPPER(device_brand));
+CREATE INDEX IF NOT EXISTS idx_devices_name ON device (UPPER(device_name) text_pattern_ops);
+CREATE INDEX IF NOT EXISTS idx_devices_brand ON device (device_brand);
 CREATE INDEX IF NOT EXISTS idx_devices_state ON device (device_state);

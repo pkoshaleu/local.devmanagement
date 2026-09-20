@@ -48,26 +48,26 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}")
-    public DeviceResponse getById(@PathVariable Integer id) {
+    public DeviceResponse getById(@PathVariable Long id) {
         var device = service.getById(id);
         return mapper.toResponse(device);
     }
 
     @PatchMapping("/{id}")
-    public DeviceResponse update(@PathVariable Integer id, @Valid @RequestBody PatchDeviceRequest request) {
+    public DeviceResponse update(@PathVariable Long id, @Valid @RequestBody PatchDeviceRequest request) {
         var device = service.updateDevice(id, request.name(), request.brand());
         return mapper.toResponse(device);
     }
 
     @PutMapping("/{id}/state")
-    public DeviceResponse updateState(@PathVariable Integer id, @Valid @RequestBody ChangeStateRequest request) {
+    public DeviceResponse updateState(@PathVariable Long id, @Valid @RequestBody ChangeStateRequest request) {
         var device = service.updateState(id, request.state());
         return mapper.toResponse(device);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable Long id) {
         service.delete(id);
     }
 

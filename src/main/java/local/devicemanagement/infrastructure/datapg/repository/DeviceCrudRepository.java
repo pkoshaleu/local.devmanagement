@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import local.devicemanagement.infrastructure.datapg.entity.DeviceEntity;
 
 
-public interface DeviceCrudRepository extends CrudRepository<DeviceEntity, Integer> {
+public interface DeviceCrudRepository extends CrudRepository<DeviceEntity, Long> {
 
 }

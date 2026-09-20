@@ -10,12 +10,12 @@ import java.time.Instant;
 @Builder(toBuilder = true)
 public class Device {
 
-    Integer id;
+    Long id;
     String name;
     String brand;
     State state;
     Instant createdAt;
     Instant updatedAt;
-    Integer version;
+    Long version;
 
 }

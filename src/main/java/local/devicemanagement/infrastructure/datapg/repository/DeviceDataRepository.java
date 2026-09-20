@@ -28,7 +28,7 @@ public class DeviceDataRepository implements DeviceRepository {
     private final DeviceEntityMapper mapper;
 
     @Override
-    public Optional<Device> findById(Integer id) {
+    public Optional<Device> findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDomain);
     }

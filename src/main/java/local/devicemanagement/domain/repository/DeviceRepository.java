@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface DeviceRepository {
 
-    Optional<Device> findById(Integer id);
+    Optional<Device> findById(Long id);
 
     List<Device> findAll(DeviceFilter filter);
 
