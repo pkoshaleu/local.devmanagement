@@ -3,8 +3,9 @@ package local.devicemanagement.application.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import local.devicemanagement.application.exception.IllicitStateException;
+import local.devicemanagement.application.exception.ModificationException;
 import local.devicemanagement.application.exception.NotFoundException;
+import local.devicemanagement.application.exception.StateException;
 import local.devicemanagement.domain.model.Device;
 import local.devicemanagement.domain.model.State;
 import local.devicemanagement.domain.repository.DeviceRepository;
@@ -57,6 +58,18 @@ public class DeviceService {
         return repository.save(updated);
     }
 
+    public Device update(Integer id, State next) {
+        Device device = getById(id);
+
+        State current = device.getState();
+        if (!current.isAllowed(next)) {
+            throw new StateException(id, current, next);
+        }
+
+        var updated = device.toBuilder().state(next).updatedAt(timeService.now()).build();
+        return repository.save(updated);
+    }
+
     public void delete(Integer id) {
         Device device = guardState(getById(id));
         repository.delete(device);
@@ -64,7 +77,7 @@ public class DeviceService {
 
     private static Device guardState(Device device) {
         if (device.getState() == State.IN_USE) {
-            throw new IllicitStateException(device.getId(), device.getState());
+            throw new ModificationException(device.getId(), device.getState());
         }
         return device;
     }

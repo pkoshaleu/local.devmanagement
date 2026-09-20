@@ -59,9 +59,8 @@ public class DeviceController {
 
     @PutMapping("/{id}/state")
     public DeviceResponse updateState(@PathVariable Integer id, @Valid @RequestBody ChangeStateRequest request) {
-        //unpack, send only two
-        //deviceService.update(id, request.device(), request.body()
-        return null;
+        var device = service.update(id, request.state());
+        return mapper.toResponse(device);
     }
 
     @DeleteMapping("/{id}")
